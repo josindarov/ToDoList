@@ -6,8 +6,8 @@ interface ITaskRepository
 {
     public function GetAllTasks();
     public function GetTaskById($id);
-    public function AddTask($task);
+    public function AddTask(array $task);
     public function DeleteTask($id);
-    public function UpdateTask($id, $task);
+    public function UpdateTask($id, array $task);
 
 }
