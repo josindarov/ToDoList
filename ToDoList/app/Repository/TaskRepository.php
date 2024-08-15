@@ -10,7 +10,7 @@ class TaskRepository implements ITaskRepository
     private Task $task;
     function __construct(Task $task)
     {
-        $this->$task = $task;
+        $this->task = $task;
     }
     public function GetAllTasks()
     {
