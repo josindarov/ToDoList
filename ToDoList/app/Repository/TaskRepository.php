@@ -22,7 +22,7 @@ class TaskRepository implements ITaskRepository
         return $this->task->findOrFail($id);
     }
 
-    public function AddTask($task)
+    public function AddTask(array $task)
     {
         return $this->task->create($task);
     }
@@ -32,7 +32,7 @@ class TaskRepository implements ITaskRepository
         return $this->task->findOrFail($id)->delete();
     }
 
-    public function UpdateTask($id, $task)
+    public function UpdateTask($id, array $task)
     {
         $updatedTask = $this->GetTaskById($id);
         $updatedTask->update($task);
