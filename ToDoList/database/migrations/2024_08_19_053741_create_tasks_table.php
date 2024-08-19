@@ -18,20 +18,18 @@ class StoreController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $request->validate([
-            'user_id' => 'required|exists:users,id',
+        // Validate the incoming request
+        $validated = $request->validate([
+            'user_id' => Auth::id(),
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
+            'completed' => false
         ]);
 
-        $validated['user_id'] = Auth::id();
+        // Create the task
+        $task = Task::create($validated);
 
-        $task = Task::create([
-            'user_id' => $request->input('user_id'),
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-        ]);
-
-        return response()->json($task, 201);
+        // Return a JSON response with the created task
+        return response()->json(['task' => $task], 201);
     }
 }
