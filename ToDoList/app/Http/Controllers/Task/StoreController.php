@@ -24,8 +24,6 @@ class StoreController extends Controller
             'description' => 'required|string',
         ]);
 
-        $validated['user_id'] = Auth::id();
-
         $task = Task::create([
             'user_id' => $request->input('user_id'),
             'title' => $request->input('title'),
