@@ -15,9 +15,8 @@ class ShowController extends Controller
      * @param Task $task
      * @return JsonResponse
      */
-    public function __invoke(int $id): \Illuminate\Http\JsonResponse
+    public function __invoke(Task $task): JsonResponse
     {
-        $task = Task::findOrFail($id);
         return response()->json($task);
     }
 }

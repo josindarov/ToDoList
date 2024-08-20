@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes
+| API router
 |--------------------------------------------------------------------------
 |
 | Here is where you can register API routes for your application. These
@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-// Routes for Authentication
+// router for Authentication
 Route::post('/register', RegisterController::class)->name('auth.register');
 Route::post('/login', LoginController::class)->name('auth.login');
 Route::post('/logout', LogoutController::class)->middleware('auth:sanctum')->name('auth.logout');
@@ -30,10 +30,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Task Controller Routes
+// Task Controller router
 Route::middleware('auth:sanctum')->group(function (){
     Route::get('/index', IndexController::class)->name('task.index');
-    Route::get('/task/{task}', ShowController::class)->name('task.show');
+    Route::get('/show/{task}', ShowController::class)->name('task.show');
     Route::post('/store', StoreController::class)->name('task.store');
     Route::put('/update/{task}', UpdateController::class)->name('task.update');
     Route::delete('/delete/{task}', DestroyController::class)->name('task.destroy');

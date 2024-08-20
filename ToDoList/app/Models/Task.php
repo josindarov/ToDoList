@@ -16,6 +16,8 @@ class Task extends Model
         'completed',
     ];
 
+
+    // Relation between user and task
     public function user()
     {
         return $this->belongsTo(User::class);

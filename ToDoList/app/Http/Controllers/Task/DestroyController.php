@@ -16,10 +16,9 @@ class DestroyController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function __invoke(int $id)
+    public function __invoke(Task $task): JsonResponse
     {
-        $task = Task::findOrFail($id);
         $task->delete();
-        return response()->json(null, Response::HTTP_NO_CONTENT);
+        return response()->json("Task is deleted");
     }
 }

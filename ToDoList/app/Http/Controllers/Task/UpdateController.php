@@ -16,10 +16,8 @@ class UpdateController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function __invoke(Request $request, $id)
+    public function __invoke(Request $request, Task $task): JsonResponse
     {
-        $task = Task::findOrFail($id);
-
         $validated = $request->validate([
             'title' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
