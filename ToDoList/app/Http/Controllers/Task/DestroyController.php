@@ -20,7 +20,6 @@ class DestroyController extends Controller
     {
         $task = Task::findOrFail($id);
         $task->delete();
-
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }
