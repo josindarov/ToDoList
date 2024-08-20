@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
 use http\Client\Response;
 use Illuminate\Http\JsonResponse;
@@ -16,16 +17,17 @@ class UpdateController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function __invoke(Request $request, Task $task): JsonResponse
+    public function __invoke(UpdateTaskRequest $request, Task $task): JsonResponse
     {
-        $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
-            'is_completed' => 'boolean',
-        ]);
+        if(!$task)
+        {
+            return response()->json('Task is not found');
+        }
+        else
+        {
+            $task->update($request->only('title', 'description'));
 
-        $task->update($validated);
-
-        return response()->json($task);
+            return response()->json($task);
+        }
     }
 }

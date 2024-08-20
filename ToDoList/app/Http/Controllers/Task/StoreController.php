@@ -2,35 +2,34 @@
 
 namespace App\Http\Controllers\Task;
 
+use App\Http\Controllers\Action\Task\StoreTask;
 use App\Http\Controllers\Controller;
-use App\Models\Task;
+use App\Http\Requests\StoreTaskRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class StoreController extends Controller
 {
+    protected $storeTask;
+
+    public function __construct(StoreTask $storeTask)
+    {
+        $this->storeTask = $storeTask;
+    }
+
     /**
      * Handle the incoming request.
      *
-     * @param Request $request
+     * @param StoreTaskRequest $request
      * @return JsonResponse
      */
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(StoreTaskRequest $request): JsonResponse
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-        ]);
+        // Use the StoreTask action to create a new task
+        $task = $this->storeTask->handle($request);
+        $task->save();
 
-        $userId = Auth::id();
-
-        $task = Task::create([
-            'user_id' => $userId,
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-        ]);
-
-        return response()->json($task, 201);
+        // Return the created task as a JSON response
+        return response()->json($task);
     }
 }
