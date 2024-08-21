@@ -31,12 +31,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Task Controller router
-Route::middleware('auth:sanctum')->group(function (){
-    Route::get('/index', IndexController::class)->name('task.index');
-    Route::get('/show/{task}', ShowController::class)->name('task.show');
-    Route::post('/store', StoreController::class)->name('task.store');
-    Route::put('/update/{task}', UpdateController::class)->name('task.update');
-    Route::delete('/delete/{task}', DestroyController::class)->name('task.destroy');
+Route::middleware('auth:sanctum')->prefix('task')->name('task.')->group(function (){
+    Route::get('/index', IndexController::class)->name('index');
+    Route::get('/show/{task}', ShowController::class)->name('show');
+    Route::post('/store', StoreController::class)->name('store');
+    Route::put('/update/{task}', UpdateController::class)->name('update');
+    Route::delete('/delete/{task}', DestroyController::class)->name('destroy');
 });
 
 
