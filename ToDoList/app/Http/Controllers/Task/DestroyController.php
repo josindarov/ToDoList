@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class DestroyController extends Controller
 {
@@ -18,6 +17,7 @@ class DestroyController extends Controller
      */
     public function __invoke(Task $task): JsonResponse
     {
+        $this->authorize('delete', $task);
         $task->delete();
         return response()->json("Task is deleted");
     }

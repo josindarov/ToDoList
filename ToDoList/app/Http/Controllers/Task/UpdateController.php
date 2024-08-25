@@ -19,6 +19,8 @@ class UpdateController extends Controller
      */
     public function __invoke(UpdateTaskRequest $request, Task $task): JsonResponse
     {
+        $this->authorize('update', $task);
+
         if(!$task)
         {
             return response()->json('Task is not found');
