@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Task;
 
 use App\Http\Controllers\Controller;
 use App\Models\Task;
-use Illuminate\Database\Eloquent\Collection;
+
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+
 
 class IndexController extends Controller
 {
@@ -13,11 +15,12 @@ class IndexController extends Controller
      * Handle the incoming request.
      *
      * @param Request $request
-     * @return string
      */
-    public function __invoke(Request $request): string
+    public function __invoke(Request $request): JsonResponse
     {
-        $tasks = Task::all();
+        $this->authorize('viewAny', Task::class);
+        $tasks = Task::where('user_id', $request->user()->id)->get();
+
         return response()->json($tasks);
     }
 }
