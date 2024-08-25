@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Action\Auth;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class LoginUser
 {
-    public function execute(Request $request)
+    public function execute(Request $request): JsonResponse
     {
-        $this->validateRequest($request);
-
         $user = $this->getUserByEmail($request->email);
 
         if (!$this->checkPassword($request->password, $user->password)) {
@@ -23,20 +22,13 @@ class LoginUser
         return $this->successResponse($user, $token);
     }
 
-    protected function validateRequest(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email|exists:users',
-            'password' => 'required'
-        ]);
-    }
 
     protected function getUserByEmail($email)
     {
         return User::where('email', $email)->first();
     }
 
-    protected function checkPassword($inputPassword, $storedPassword)
+    protected function checkPassword($inputPassword, $storedPassword): bool
     {
         return Hash::check($inputPassword, $storedPassword);
     }
@@ -46,7 +38,7 @@ class LoginUser
         return $user->createToken($user->name)->plainTextToken;
     }
 
-    protected function invalidPasswordResponse()
+    protected function invalidPasswordResponse(): JsonResponse
     {
         return response()->json([
             'errors' => [
@@ -55,7 +47,7 @@ class LoginUser
         ]);
     }
 
-    protected function successResponse(User $user, $token): \Illuminate\Http\JsonResponse
+    protected function successResponse(User $user, $token): JsonResponse
     {
         return response()->json([
             'user' => $user,

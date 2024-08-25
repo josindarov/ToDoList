@@ -10,22 +10,11 @@ class RegisterUser
 {
     public function execute(Request $request): \Illuminate\Http\JsonResponse
     {
-        $this->validateRequest($request);
-
         $user = $this->createUser($request);
 
         $token = $user->createToken($request->name)->plainTextToken;
 
         return response()->json(['user' => $user, 'token' => $token]);
-    }
-
-    protected function validateRequest(Request $request): void
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
     }
 
     protected function createUser(Request $request)

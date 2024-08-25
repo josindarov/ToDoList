@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Action\Auth\LoginUser;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -15,8 +16,8 @@ class LoginController extends Controller
         $this->loginUser = $loginUser;
     }
 
-    public function __invoke(Request $request)
+    public function __invoke(LoginRequest $loginRequest)
     {
-        return $this->loginUser->execute($request);
+        return $this->loginUser->execute($loginRequest);
     }
 }
