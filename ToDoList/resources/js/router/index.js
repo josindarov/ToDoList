@@ -11,7 +11,6 @@ const routes = [
     { path: '/create', name: 'CreateTask', component: CreateTask },
     {path: '/update/:id', name: 'UpdateTask', component: UpdateTask },
     {path: '/register', name: 'RegisterUser', component: RegisterUser },
-    {path: '/login', name: 'LoginUser', component: LoginUser },
     {path: '/', name: 'LoginUser', component: LoginUser },
 ];
 

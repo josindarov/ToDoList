@@ -3,9 +3,9 @@
         <h1>Task List</h1>
         <table>
             <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Actions</th>
+                <th>{{ $t('messages.title') }}</th>
+                <th>{{ $t('messages.description') }}</th>
+                <th>{{ $t('messages.action') }}</th>
             </tr>
             <tr v-for="task in tasks" :key="task.id">
                 <td>{{ task.title }}</td>
