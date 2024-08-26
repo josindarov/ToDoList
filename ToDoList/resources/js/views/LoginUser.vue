@@ -17,6 +17,7 @@
                 </ul>
             </div>
         </form>
+        <button @click="register">Register</button>
     </div>
 </template>
 
@@ -102,6 +103,7 @@ button {
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-top: 10px;
+    width: 100%;
 }
 
 button:hover {
