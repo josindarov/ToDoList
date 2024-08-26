@@ -1,15 +1,15 @@
 <template>
     <div class="create-task-container">
-        <h2>{{ $t('messages.createTask')}}}</h2>
+        <h2>{{ $t('createTask')}}</h2>
         <div class="form-group">
-            <label>{{$t('messages.title')}}</label>
+            <label>{{$t('title')}}</label>
             <input
                 type="text"
                 placeholder="Task Title"
                 v-model="task.title"
             /><br>
 
-            <label>{{ $t('messages.description')}}</label>
+            <label>{{ $t('description')}}</label>
             <input
                 type="text"
                 placeholder="Task Description"
