@@ -36,18 +36,13 @@ export default {
         };
     },
 
-    created() {
-        console.log(this.task.user_id);
-    }
-    ,
     methods: {
         async createTask() {
             try {
                 // Sending the task object directly without wrapping it in another object
                 const response = await axios.post("/store", {
                     title: this.task.title,
-                    description: this.task.description,
-                    user_id: 4
+                    description: this.task.description
                 });
 
                 if (response.status === 200) {
