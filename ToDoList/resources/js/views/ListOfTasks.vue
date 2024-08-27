@@ -1,69 +1,66 @@
 <template>
     <div>
         <h1>Task List</h1>
-        <table>
-            <tr>
-                <th>{{ $t('title') }}</th>
-                <th>{{ $t('description') }}</th>
-                <th>{{ $t('action') }}</th>
-            </tr>
-            <tr v-for="task in tasks" :key="task.id">
-                <td>{{ task.title }}</td>
-                <td>{{ task.description }}</td>
-                <td>
-                    <span @click="updateTask(task.id)" class="icon update-icon">&#x270E;</span>
-                    <span @click="deleteTask(task.id)" class="icon delete-icon">&#x1F5D1;</span>
-                </td>
-            </tr>
-        </table>
+        <div v-if="loading">Loading tasks...</div>
+        <div v-else>
+            <table v-if="tasks.length > 0">
+                <tr>
+                    <th>{{ $t('title') }}</th>
+                    <th>{{ $t('description') }}</th>
+                    <th>{{ $t('action') }}</th>
+                </tr>
+                <tr v-for="task in tasks" :key="task.id">
+                    <td>{{ task.title }}</td>
+                    <td>{{ task.description }}</td>
+                    <td>
+                        <span @click="updateTask(task)" class="icon update-icon">&#x270E;</span>
+                        <span @click="deleteTask(task.id)" class="icon delete-icon">&#x1F5D1;</span>
+                    </td>
+                </tr>
+            </table>
+            <div v-else>No tasks available.</div>
+        </div>
         <button @click="createNewTask">Create a New Task</button>
     </div>
 </template>
 
 <script>
-import axios from '../axiosInstance';
+import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import { computed, onMounted, ref } from 'vue';
 
 export default {
-    data() {
+    setup() {
+        const store = useStore();
+        const router = useRouter();
+
+        const tasks = computed(() => store.getters.getTasks);
+
+        onMounted(async () => {
+            await store.dispatch('fetchTasks');
+            loading.value = false;
+        });
+
+        // Methods
+        const updateTask = (task) => {
+            router.push({ name: 'UpdateTask', params: { id: task.id } });
+        };
+
+        const deleteTask = async (taskId) => {
+            await store.dispatch('deleteTask', taskId);
+        };
+
+        const createNewTask = () => {
+            router.push({ name: 'CreateTask' });
+        };
+
         return {
-            tasks: [],
+            tasks,
+            updateTask,
+            deleteTask,
+            createNewTask
         };
     },
-
-    async created() {
-        try {
-            await this.fetchData();
-        } catch (error) {
-            console.error('Failed to fetch tasks:', error);
-        }
-    },
-    methods: {
-        async fetchData() {
-            try {
-                const response = await axios.get('/index');
-                this.tasks = response.data;
-                console.log('API Response:', this.tasks);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        },
-        updateTask(taskId) {
-            this.$router.push({name: 'UpdateTask', params: {id: taskId}});
-        },
-
-        async deleteTask(taskId) {
-            try {
-                await axios.delete(`/delete/${taskId}`);
-                this.tasks = this.tasks.filter(task => task.id !== taskId);
-            } catch (error) {
-                console.error('Error deleting task:', error);
-            }
-        },
-        createNewTask() {
-            this.$router.push({name: 'CreateTask'});
-        }
-    }
 };
 </script>
 

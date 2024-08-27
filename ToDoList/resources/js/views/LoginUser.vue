@@ -10,14 +10,16 @@
                 <label for="password">Password:</label>
                 <input type="password" v-model="form.password" required>
             </div>
-            <button type="submit">Login</button>
+            <button type="submit" :disabled="loading">
+                {{ loading ? 'Logging in...' : 'Login' }}
+            </button>
             <div v-if="errors.length">
                 <ul>
                     <li v-for="error in errors" :key="error">{{ error }}</li>
                 </ul>
             </div>
         </form>
-        <button @click="register">Register</button>
+        <button @click="navigateToRegister">Register</button>
     </div>
 </template>
 
@@ -31,11 +33,14 @@ export default {
                 email: '',
                 password: ''
             },
-            errors: []
+            errors: [],
+            loading: false, // State to track loading status
         };
     },
     methods: {
         async login() {
+            this.errors = []; // Clear previous errors
+            this.loading = true; // Start loading
             try {
                 const response = await axios.post('/api/login', this.form);
                 localStorage.setItem('token', response.data.token);
@@ -45,13 +50,16 @@ export default {
                     this.errors = Object.values(error.response.data.errors).flat();
                 } else {
                     console.error('An unexpected error occurred:', error);
+                    this.errors.push('An unexpected error occurred. Please try again.');
                 }
                 alert('You are not registered. Please register');
-                await this.register();
+                this.navigateToRegister();
+            } finally {
+                this.loading = false; // Stop loading
             }
         },
 
-        async register(){
+        navigateToRegister() {
             this.$router.push('/register');
         }
     }
@@ -59,7 +67,6 @@ export default {
 </script>
 
 <style scoped>
-
 .login {
     max-width: 400px;
     margin: 0 auto;
@@ -110,6 +117,11 @@ button:hover {
     background-color: #2980b9;
 }
 
+button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
 .error-messages {
     margin-top: 10px;
     color: #e74c3c;
@@ -118,5 +130,4 @@ button:hover {
 ul {
     padding-left: 20px;
 }
-
 </style>

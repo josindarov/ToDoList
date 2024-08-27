@@ -18,7 +18,9 @@
                 <label for="password_confirmation">Confirm Password:</label>
                 <input type="password" v-model="form.password_confirmation" required>
             </div>
-            <button type="submit">Register</button>
+            <button type="submit" :disabled="loading">
+                {{ loading ? 'Registering...' : 'Register' }}
+            </button>
             <div v-if="errors.length">
                 <ul>
                     <li v-for="error in errors" :key="error">{{ error }}</li>
@@ -40,11 +42,14 @@ export default {
                 password: '',
                 password_confirmation: ''
             },
-            errors: []
+            errors: [],
+            loading: false, // State to track loading status
         };
     },
     methods: {
         async register() {
+            this.errors = []; // Clear previous errors
+            this.loading = true; // Start loading
             try {
                 const response = await axios.post('/api/register', this.form);
                 this.$router.push('/');
@@ -53,7 +58,10 @@ export default {
                     this.errors = Object.values(error.response.data.errors).flat();
                 } else {
                     console.error('An unexpected error occurred:', error);
+                    this.errors.push('An unexpected error occurred. Please try again.');
                 }
+            } finally {
+                this.loading = false; // Stop loading
             }
         }
     }
@@ -61,7 +69,6 @@ export default {
 </script>
 
 <style scoped>
-
 .register {
     max-width: 400px;
     margin: 0 auto;
@@ -110,6 +117,11 @@ button:hover {
     background-color: #2980b9;
 }
 
+button:disabled {
+    background-color: #bdc3c7;
+    cursor: not-allowed;
+}
+
 .error-messages {
     margin-top: 10px;
     color: #e74c3c;
@@ -118,5 +130,4 @@ button:hover {
 ul {
     padding-left: 20px;
 }
-
 </style>

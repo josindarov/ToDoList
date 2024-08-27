@@ -2,14 +2,14 @@
     <div class="create-task-container">
         <h2>Update Task</h2>
         <div class="form-group">
-            <label>{{ $t('messages.title') }}</label>
+            <label>{{ $t('title') }}</label>
             <input
                 type="text"
                 placeholder="Task Title"
                 v-model="task.title"
             /><br>
 
-            <label>{{ $t('messages.description') }}</label>
+            <label>{{ $t('description') }}</label>
             <input
                 type="text"
                 placeholder="Task Description"
@@ -18,11 +18,13 @@
 
             <button @click="updateTask">Update</button>
         </div>
+
+        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
     </div>
 </template>
 
-
 <script>
+import { mapActions } from 'vuex';
 import axios from "../axiosInstance";
 
 export default {
@@ -32,39 +34,44 @@ export default {
                 id: this.$route.params.id,
                 title: "",
                 description: ""
-            }
+            },
+            errorMessage: "",
         };
     },
 
     async mounted() {
-        try {
-            const response = await axios.get(`/show/${this.task.id}`);
-            this.task = response.data;
-        } catch (error) {
-            console.error('Error fetching task:', error);
-        }
+        await this.fetchTask();
     },
 
     methods: {
-        async updateTask() {
+        ...mapActions(['updateTask', 'fetchTasks']),
+        async fetchTask() {
             try {
-                const response = await axios.put(`/update/${this.task.id}`,{
-                    title: this.task.title,
-                    description: this.task.description,
-                });
+                const response = await axios.get(`/show/${this.task.id}`);
 
-                if (response.status === 200) { // Check for success status code
-                    // Reset form inputs
-                    this.task.title = "";
-                    this.task.description = "";
-
-                    // Redirect to the Task List
-                    this.$router.push({ name: "ListOfTasks" });
+                if (response.status === 200) {
+                    this.task = response.data; // Assume your backend sends the task object directly
                 } else {
-                    console.error("Failed to update task:", response);
+                    console.error("Task not found:", response);
+                    this.errorMessage = "Task not found.";
                 }
             } catch (error) {
+                console.error('Error fetching task:', error.response ? error.response.data : error);
+                if (error.response && error.response.status === 404) {
+                    this.errorMessage = "Task not found or endpoint incorrect.";
+                } else {
+                    this.errorMessage = "Error fetching task. Please try again.";
+                }
+            }
+        },
+
+        async updateTask() {
+            try {
+                await this.updateTask(this.task);
+                this.$router.push({name: "ListOfTasks"});
+            } catch (error) {
                 console.error("Error updating task:", error.response ? error.response.data : error);
+                this.errorMessage = "Error updating task. Please try again.";
             }
         }
     }
@@ -120,4 +127,10 @@ button {
 button:hover {
     background-color: #2980b9;
 }
+
+.error-message {
+    color: red;
+    margin-top: 10px;
+}
 </style>
+

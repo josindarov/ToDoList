@@ -1,15 +1,15 @@
 <template>
     <div class="create-task-container">
-        <h2>{{ $t('createTask')}}</h2>
+        <h2>{{ $t('createTask') }}</h2>
         <div class="form-group">
-            <label>{{$t('title')}}</label>
+            <label>{{ $t('title') }}</label>
             <input
                 type="text"
                 placeholder="Task Title"
                 v-model="task.title"
             /><br>
 
-            <label>{{ $t('description')}}</label>
+            <label>{{ $t('description') }}</label>
             <input
                 type="text"
                 placeholder="Task Description"
@@ -18,6 +18,8 @@
 
             <button @click="createTask">Create</button>
         </div>
+        <!-- Display error message if there's any -->
+        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
     </div>
 </template>
 
@@ -29,20 +31,19 @@ export default {
         return {
             task: {
                 title: "",
-                description: "",
-                user_id: 4
-            }
+                description: ""
+            },
+            errorMessage: "", // State to hold error messages
         };
     },
 
     methods: {
         async createTask() {
+            this.errorMessage = ""; // Reset error message before submission
+
             try {
-                // Sending the task object directly without wrapping it in another object
-                const response = await axios.post("/store", {
-                    title: this.task.title,
-                    description: this.task.description
-                });
+                // Send the task object directly
+                const response = await axios.post("/store", this.task);
 
                 if (response.status === 200) {
                     // Reset form inputs
@@ -56,6 +57,7 @@ export default {
                 }
             } catch (error) {
                 console.error("Error creating task:", error.response ? error.response.data : error);
+                this.errorMessage = "An error occurred while creating the task.";
             }
         }
     }
@@ -110,5 +112,10 @@ button {
 
 button:hover {
     background-color: #2980b9;
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
 }
 </style>
