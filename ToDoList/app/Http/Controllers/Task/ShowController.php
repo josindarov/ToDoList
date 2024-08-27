@@ -17,7 +17,7 @@ class ShowController extends Controller
      */
     public function __invoke(Task $task): JsonResponse
     {
-        $this->authorize('show', $task);
+        $this->authorize('view', $task);
         return response()->json($task);
     }
 }
