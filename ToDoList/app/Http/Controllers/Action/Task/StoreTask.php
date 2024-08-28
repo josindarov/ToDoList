@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Action\Task;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Expr\Cast\Array_;
 
 class StoreTask
 {
@@ -18,9 +19,10 @@ class StoreTask
     {
         // Create a new task using the validated request data
         return Task::create([
+            'user_id' => $user_id = Auth::id(),
             'title' => $request->input('title'),
             'description' => $request->input('description'),
-            'user_id' => $user_id = Auth::id()
+            'deadline' => $request->input('deadline')
         ]);
     }
 }
