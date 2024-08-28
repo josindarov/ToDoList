@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,12 +15,15 @@ class TaskFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
+        $user = User::query()->inRandomOrder()->first();
         return [
+            'user_id' => $user->id,
             'title' => fake()->name(),
             'description' => fake()->text(),
             'completed' => fake()->boolean(),
+            'deadline' => fake()->dateTime(),
         ];
     }
 }
