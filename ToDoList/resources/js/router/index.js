@@ -7,11 +7,11 @@ import LoginUser from '../views/LoginUser.vue';
 
 
 const routes = [
+    {path: '/', name: 'LoginUser', component: LoginUser },
+    {path: '/register', name: 'RegisterUser', component: RegisterUser },
     { path: '/tasks', name: 'ListOfTasks', component: ListOfTasks },
     { path: '/create', name: 'CreateTask', component: CreateTask },
-    {path: '/update/:id', name: 'UpdateTask', component: UpdateTask },
-    {path: '/register', name: 'RegisterUser', component: RegisterUser },
-    {path: '/', name: 'LoginUser', component: LoginUser },
+    {path: '/update/:id', name: 'UpdateTask', component: UpdateTask }
 ];
 
 const router = createRouter({

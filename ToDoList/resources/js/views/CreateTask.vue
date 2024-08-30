@@ -5,60 +5,64 @@
             <label>{{ $t('title') }}</label>
             <input
                 type="text"
-                placeholder="Task Title"
-                v-model="task.title"
+                v-model="title"
             /><br>
 
             <label>{{ $t('description') }}</label>
             <input
                 type="text"
-                placeholder="Task Description"
-                v-model="task.description"
+                v-model="description"
             />
 
-            <button @click="createTask">Create</button>
+            <label>{{ $t('deadline') }}</label>
+            <input
+                type="datetime-local"
+                v-model="deadline"
+            /><br>
+            <button @click="createTodo">Create</button>
         </div>
-        <!-- Display error message if there's any -->
-        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
     </div>
 </template>
 
 <script>
-import axios from "../axiosInstance";
+import {mapActions, mapState} from "vuex";
 
 export default {
-    data() {
-        return {
-            task: {
-                title: "",
-                description: ""
+    computed: {
+        ...mapState({
+            task: state => state.task
+        }),
+        title: {
+            get() {
+                return this.task.title;
             },
-            errorMessage: "", // State to hold error messages
-        };
+            set(value) {
+                this.$store.commit('setTask', { ...this.task, title: value });
+            }
+        },
+        description: {
+            get() {
+                return this.task.description;
+            },
+            set(value) {
+                this.$store.commit('setTask', { ...this.task, description: value });
+            }
+        },
+        deadline: {
+            get() {
+                return this.task.deadline;
+            },
+            set(value) {
+                this.$store.commit('setTask', { ...this.task, deadline: value });
+            }
+        }
     },
 
     methods: {
-        async createTask() {
-            this.errorMessage = ""; // Reset error message before submission
+        ...mapActions(['createTask']),
 
-            try {
-                // Send the task object directly
-                const response = await axios.post("/store", this.task);
-
-                if (response.status === 200) {
-                    // Reset form inputs
-                    this.task.title = "";
-                    this.task.description = "";
-
-                    // Redirect to the Task List
-                    this.$router.push({ name: "ListOfTasks" });
-                } else {
-                    console.error("Failed to create task:", response);
-                }
-            } catch (error) {
-                console.error("Error creating task:", error.response ? error.response.data : error);
-                this.errorMessage = "An error occurred while creating the task.";
-            }
+        async createTodo() {
+            await this.createTask().then(() => this.$router.push('/tasks'));
         }
     }
 };

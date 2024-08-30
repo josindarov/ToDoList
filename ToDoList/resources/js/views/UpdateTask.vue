@@ -1,85 +1,99 @@
 <template>
-    <div class="create-task-container">
+    <div class="update-task-container">
         <h2>Update Task</h2>
         <div class="form-group">
             <label>{{ $t('title') }}</label>
             <input
                 type="text"
                 placeholder="Task Title"
-                v-model="task.title"
+                v-model="title"
             /><br>
 
             <label>{{ $t('description') }}</label>
             <input
                 type="text"
                 placeholder="Task Description"
-                v-model="task.description"
-            />
+                v-model="description"
+            /><br>
 
-            <button @click="updateTask">Update</button>
+            <label>{{ $t('deadline') }}</label>
+            <input
+                type="datetime-local"
+                placeholder="Task Deadline"
+                v-model="deadline"
+            /><br>
+            <label for="task">Choose a task status</label>
+            <select id="task" v-model="completed">
+                <option value="0">In Progress</option>
+                <option value="1">Done</option>
+            </select>
+
+            <button @click="updateTodo">Update</button>
         </div>
-
-        <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import axios from "../axiosInstance";
+import { mapActions, mapState } from 'vuex';
 
 export default {
-    data() {
-        return {
-            task: {
-                id: this.$route.params.id,
-                title: "",
-                description: ""
+    computed: {
+        ...mapState({
+            task: state => state.task
+        }),
+        title: {
+            get() {
+                return this.task.title;
             },
-            errorMessage: "",
-        };
-    },
-
-    async mounted() {
-        await this.fetchTask();
-    },
-
-    methods: {
-        ...mapActions(['updateTask', 'fetchTasks']),
-        async fetchTask() {
-            try {
-                const response = await axios.get(`/show/${this.task.id}`);
-
-                if (response.status === 200) {
-                    this.task = response.data; // Assume your backend sends the task object directly
-                } else {
-                    console.error("Task not found:", response);
-                    this.errorMessage = "Task not found.";
-                }
-            } catch (error) {
-                console.error('Error fetching task:', error.response ? error.response.data : error);
-                if (error.response && error.response.status === 404) {
-                    this.errorMessage = "Task not found or endpoint incorrect.";
-                } else {
-                    this.errorMessage = "Error fetching task. Please try again.";
-                }
+            set(value) {
+                this.$store.commit('setTask', { ...this.task, title: value });
             }
         },
-
-        async updateTask() {
-            try {
-                await this.updateTask(this.task);
-                this.$router.push({name: "ListOfTasks"});
-            } catch (error) {
-                console.error("Error updating task:", error.response ? error.response.data : error);
-                this.errorMessage = "Error updating task. Please try again.";
+        description: {
+            get() {
+                return this.task.description;
+            },
+            set(value) {
+                this.$store.commit('setTask', { ...this.task, description: value });
             }
+        },
+        deadline: {
+            get() {
+                return this.task.deadline;
+            },
+            set(value) {
+                this.$store.commit('setTask', { ...this.task, deadline: value });
+            }
+        },
+        completed: {
+            get() {
+                return this.task.completed;
+            },
+            set(value) {
+                this.$store.commit('setTask', { ...this.task, completed: value });
+            }
+        },
+    },
+    methods: {
+        ...mapActions(['updateTask', 'fetchTask']),
+        async updateTodo() {
+            await this.updateTask().then(() => {
+                this.$router.push('/tasks');
+            }).catch(error => {
+                console.error("Error updating task:", error);
+            });
         }
+    },
+    async created() {
+        await this.fetchTask({ id: this.$route.params.id }).catch(error => {
+            console.error("Error fetching task:", error);
+        });
     }
 };
 </script>
 
 <style scoped>
-.create-task-container {
+.update-task-container {
     max-width: 400px;
     margin: 50px auto;
     padding: 20px;

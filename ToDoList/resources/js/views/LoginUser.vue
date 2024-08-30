@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <h2>Login</h2>
-        <form @submit.prevent="login">
+        <form @submit.prevent="loginUser">
             <div>
                 <label for="email">Email:</label>
                 <input type="email" v-model="form.email" required>
@@ -10,53 +10,49 @@
                 <label for="password">Password:</label>
                 <input type="password" v-model="form.password" required>
             </div>
-            <button type="submit" :disabled="loading">
-                {{ loading ? 'Logging in...' : 'Login' }}
+            <button type="submit" >
+                Login
             </button>
-            <div v-if="errors.length">
-                <ul>
-                    <li v-for="error in errors" :key="error">{{ error }}</li>
-                </ul>
-            </div>
         </form>
         <button @click="navigateToRegister">Register</button>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
-
+import {mapActions, mapState} from 'vuex';
 export default {
-    data() {
-        return {
-            form: {
-                email: '',
-                password: ''
+    computed: {
+        ...mapState({
+            form: state => state.form
+        }),
+        email: {
+            get() {
+                return this.form.email;
             },
-            errors: [],
-            loading: false, // State to track loading status
-        };
-    },
-    methods: {
-        async login() {
-            this.errors = []; // Clear previous errors
-            this.loading = true; // Start loading
-            try {
-                const response = await axios.post('/api/login', this.form);
-                localStorage.setItem('token', response.data.token);
-                this.$router.push('/tasks');
-            } catch (error) {
-                if (error.response && error.response.data.errors) {
-                    this.errors = Object.values(error.response.data.errors).flat();
-                } else {
-                    console.error('An unexpected error occurred:', error);
-                    this.errors.push('An unexpected error occurred. Please try again.');
-                }
-                alert('You are not registered. Please register');
-                this.navigateToRegister();
-            } finally {
-                this.loading = false; // Stop loading
+            set(value) {
+                this.$store.commit('setForm', { ...this.form, email: value });
             }
+        },
+        password: {
+            get() {
+                return this.form.password;
+            },
+            set(value) {
+                this.$store.commit('setForm', { ...this.form, password: value });
+            }
+        }
+    },
+
+    methods: {
+        ...mapActions(['login']),
+
+        async loginUser(){
+            try {
+                this.login().then(() => this.$router.push('/tasks'))
+            }catch (error){
+                alert("User is not registered")
+            }
+
         },
 
         navigateToRegister() {
