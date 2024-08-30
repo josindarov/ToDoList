@@ -6,12 +6,16 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Exception;
 
 class LoginUser
 {
     public function execute(Request $request): JsonResponse
     {
         $user = $this->getUserByEmail($request->email);
+        if(!$user){
+            throw new Exception("User not found");
+        }
 
         if (!$this->checkPassword($request->password, $user->password)) {
             return $this->invalidPasswordResponse();

@@ -27,7 +27,7 @@ class UpdateController extends Controller
         }
         else
         {
-            $task->update($request->only('title', 'description', 'deadline'));
+            $task->update($request->only('title', 'description', 'deadline', 'completed'));
 
             return response()->json($task);
         }
