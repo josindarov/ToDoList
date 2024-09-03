@@ -62,10 +62,8 @@ export default {
         const store = useStore();
         const router = useRouter();
 
-        // Fetch tasks from Vuex store
         const tasks = computed(() => store.getters.getTasks);
 
-        // Search term for filtering
         const search = ref('');
 
         onMounted(async () => {
@@ -113,8 +111,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.v-btn {
-    min-width: 100px;
-}
-</style>
+
