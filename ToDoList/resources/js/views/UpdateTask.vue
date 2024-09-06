@@ -22,12 +22,13 @@
                 placeholder="Task Deadline"
                 v-model="deadline"
             /><br>
+
             <label for="task">Choose a task status</label>
             <select id="task" v-model="completed">
                 <option value="0">In Progress</option>
                 <option value="1">Done</option>
             </select>
-
+            <br>
             <button @click="updateTodo">Update</button>
         </div>
     </div>
@@ -35,8 +36,8 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
-import '../../scss/TaskForm.scss'
-import '../../scss/UpdateTask.scss'
+import '../../scss/TaskForm.scss';
+import '../../scss/UpdateTask.scss';
 
 export default {
     computed: {
@@ -74,22 +75,33 @@ export default {
             set(value) {
                 this.$store.commit('setTask', { ...this.task, completed: value });
             }
-        },
+        }
     },
     methods: {
         ...mapActions(['updateTask', 'fetchTask']),
         async updateTodo() {
-            await this.updateTask().then(() => {
+            try {
+                await this.updateTask({
+                    id: this.$route.params.id, // Make sure the task ID is passed
+                    title: this.title,
+                    description: this.description,
+                    deadline: this.deadline,
+                    completed: this.completed
+                });
+
+                // Redirect after successful update
                 this.$router.push('/tasks');
-            }).catch(error => {
+            } catch (error) {
                 console.error("Error updating task:", error);
-            });
+            }
         }
     },
     async created() {
-        await this.fetchTask({ id: this.$route.params.id }).catch(error => {
+        try {
+            await this.fetchTask({ id: this.$route.params.id });
+        } catch (error) {
             console.error("Error fetching task:", error);
-        });
+        }
     }
 };
 </script>

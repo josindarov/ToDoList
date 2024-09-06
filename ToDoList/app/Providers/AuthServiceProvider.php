@@ -3,9 +3,9 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
-use App\Models\Task;
-use App\Policies\TaskPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Modules\Task\app\Models\Task;
+use Modules\User\Policies\TaskPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {

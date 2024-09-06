@@ -52,7 +52,7 @@ export default {
             try {
                 this.login().then(() => this.$router.push('/tasks'))
             }catch (error){
-                alert("User is not registered")
+                alert("Auth is not registered")
             }
 
         },

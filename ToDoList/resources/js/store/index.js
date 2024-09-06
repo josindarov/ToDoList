@@ -114,7 +114,7 @@ export default createStore({
                 commit('updateTask', response.data);
             } catch (error) {
                 console.error("Error updating task:", error);
-                throw error;  // Rethrow to handle in component
+                throw error;
             }
         },
 
