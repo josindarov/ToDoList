@@ -1,22 +1,22 @@
 <template>
     <div class="register">
         <h2>Register</h2>
-        <form @submit.prevent="registerUser">
+        <form @submit.prevent="register">
             <div>
                 <label for="name">Name:</label>
-                <input type="text" v-model="name" required>
+                <input type="text" v-model="form.name" required>
             </div>
             <div>
                 <label for="email">Email:</label>
-                <input type="email" v-model="email" required>
+                <input type="email" v-model="form.email" required>
             </div>
             <div>
                 <label for="password">Password:</label>
-                <input type="password" v-model="password" required>
+                <input type="password" v-model="form.password" required>
             </div>
             <div>
                 <label for="password_confirmation">Confirm Password:</label>
-                <input type="password" v-model="password_confirmation" required>
+                <input type="password" v-model="form.password_confirmation" required>
             </div>
             <button type="submit">Register</button>
         </form>
@@ -24,21 +24,20 @@
 </template>
 
 <script>
-import {mapActions, mapState} from "vuex";
+import {mapActions, mapState, mapMutations} from "vuex";
 import '../../scss/AuthForm.scss'
 import '../../scss/RegisterUser.scss'
 
 export default {
     computed: {
-        ...mapState({
-            form: state => state.form
-        }),
+        ...mapState('auth', ['form']),
+
         name: {
             get() {
                 return this.form.name;
             },
             set(value) {
-                this.$store.commit('setForm', { ...this.form, name: value });
+                return this.setFormField({field: 'name', value});
             }
         },
         email: {
@@ -46,7 +45,7 @@ export default {
                 return this.form.email;
             },
             set(value) {
-                this.$store.commit('setForm', { ...this.form, email: value });
+                return this.setFormField({field: 'email', value});
             }
         },
         password: {
@@ -54,7 +53,7 @@ export default {
                 return this.form.password;
             },
             set(value) {
-                this.$store.commit('setForm', { ...this.form, password: value });
+                return this.setFormField({field: 'password', value});
             }
         },
         password_confirmation: {
@@ -62,19 +61,20 @@ export default {
                 return this.form.password_confirmation;
             },
             set(value) {
-                this.$store.commit('setForm', { ...this.form, password_confirmation: value });
+                return this.setFormField({field: 'password_confirmation', value});
             }
         },
     },
     methods: {
-        ...mapActions(['register']),
+        ...mapMutations('auth', ['setFormField']),
 
-        registerUser() {
-            this.register().then(this.navigateToLogin());
+        ...mapActions('auth', ['registration']),
+
+        async register() {
+            await this.registration().then(() => {
+                this.$router.push({name: 'ListOfTasks'})
+            })
         },
-        navigateToLogin(){
-            this.$router.push('/');
-        }
     }
 };
 </script>

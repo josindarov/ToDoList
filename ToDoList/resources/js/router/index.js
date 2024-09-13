@@ -1,17 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import ListOfTasks from '../views/ListOfTasks.vue';
-import CreateTask from '../views/CreateTask.vue';
-import UpdateTask from "../views/UpdateTask.vue";
 import RegisterUser from '../views/RegisterUser.vue';
 import LoginUser from '../views/LoginUser.vue';
+import DataTable from "../views/DataTable.vue";
 
 
 const routes = [
     {path: '/', name: 'LoginUser', component: LoginUser },
     {path: '/register', name: 'RegisterUser', component: RegisterUser },
-    { path: '/tasks', name: 'ListOfTasks', component: ListOfTasks },
-    { path: '/create', name: 'CreateTask', component: CreateTask },
-    {path: '/update/:id', name: 'UpdateTask', component: UpdateTask }
+    { path: '/tasks', name: 'ListOfTasks', component: DataTable }
+
 ];
 
 const router = createRouter({

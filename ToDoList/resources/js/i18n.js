@@ -5,14 +5,16 @@ const messages = {
         createTask: 'Create Task',
         title: 'Title',
         description: 'Description',
-        action: 'Action'
+        action: 'Action',
+        deadline: 'Deadline'
 
     },
     ru: {
         createTask: 'Создать задачу',
         title: 'Заголовок',
         description: 'описание',
-        action: 'Действие'
+        action: 'Действие',
+        deadline: 'Крайний срок'
     },
 };
 

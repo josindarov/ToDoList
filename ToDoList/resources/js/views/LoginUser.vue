@@ -19,20 +19,22 @@
 </template>
 
 <script>
-import {mapActions, mapState} from 'vuex';
+import {mapActions, mapState, mapMutations} from 'vuex';
 import '../../scss/AuthForm.scss'
 import '../../scss/LoginUser.scss'
 export default {
     computed: {
+        ...mapState('auth', ['form']),
         ...mapState({
-            form: state => state.form
+            isAuthenticated: state => state.auth.isAuthenticated
         }),
+
         email: {
             get() {
                 return this.form.email;
             },
             set(value) {
-                this.$store.commit('setForm', { ...this.form, email: value });
+                return this.setFormField({field: 'email', value});
             }
         },
         password: {
@@ -40,25 +42,29 @@ export default {
                 return this.form.password;
             },
             set(value) {
-                this.$store.commit('setForm', { ...this.form, password: value });
+                return this.setFormField({field: 'password', value});
             }
         }
     },
 
     methods: {
-        ...mapActions(['login']),
+        ...mapMutations('auth',['setFormField']),
 
-        async loginUser(){
-            try {
-                this.login().then(() => this.$router.push('/tasks'))
-            }catch (error){
-                alert("Auth is not registered")
-            }
+        ...mapActions('auth', ['login']),
 
+        async loginUser() {
+            await this.login().then(() => {
+                if(this.isAuthenticated){
+                    this.$router.push({name: 'ListOfTasks'});
+                }
+                else{
+                    alert("User is not registered");
+                }
+            })
         },
 
-        navigateToRegister() {
-            this.$router.push('/register');
+        async navigateToRegister(){
+            await this.$router.push({name: 'RegisterUser'})
         }
     }
 };
