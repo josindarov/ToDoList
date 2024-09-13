@@ -4,6 +4,7 @@ namespace Modules\Task\Routes;
 
 use Illuminate\Support\Facades\Route;
 use Modules\Task\app\Controllers\Task\DestroyController;
+use Modules\Task\app\Controllers\Task\ExportTaskController;
 use Modules\Task\app\Controllers\Task\ImportTaskController;
 use Modules\Task\app\Controllers\Task\IndexController;
 use Modules\Task\app\Controllers\Task\ShowController;
@@ -17,4 +18,5 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::put('/update/{task}', UpdateController::class)->name('task.update');
     Route::delete('/delete/{task}', DestroyController::class)->name('task.destroy');
     Route::post('/tasks/import', ImportTaskController::class)->name('tasks.import');
+    Route::get('tasks/export', ExportTaskController::class)->name('tasks.export');
 });
