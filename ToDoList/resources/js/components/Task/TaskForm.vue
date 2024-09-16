@@ -3,7 +3,7 @@
         <div>
             <div>
                 <h3> {{formTitle()}} Task</h3>
-                <button class="overlay" @click="closeForm"></button>
+                <button class="overlay" @click="closeForm">Close</button>
             </div>
 
             <DynamicFields :schema="formSchema" :submit-text="formTitle()" @onSubmit="handleSubmit">
@@ -69,14 +69,14 @@ export default {
 
                     {
                         label: 'Task Status',
-                        name: 'status',
+                        name: 'completed',
+                        type: 'boolean',
                         as: 'select',
                         options: [
                             { text: 'In Progress', value: 0 },
                             { text: 'Done', value: 1 }
                         ],
-                        value: this.taskData.completed,
-                        rules: Yup.boolean().required(),
+                        value: this.taskData.completed
                     }
                 ]
             }
@@ -95,7 +95,7 @@ export default {
             formData.append('title', data.title);
             formData.append('description', data.description);
             formData.append('deadline', data.deadline);
-            formData.append('status', data.completed);
+            formData.append('completed', data.completed);
 
             if(this.isUpdate){
                 formData.append("_method", "PUT")

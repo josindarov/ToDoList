@@ -8,6 +8,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Modules\Task\app\Exports\TaskExport;
 use Modules\Task\app\Models\Task;
 use Modules\Task\app\Requests\ExportTaskRequest;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ExportTaskController extends Controller
 {
@@ -15,10 +16,9 @@ class ExportTaskController extends Controller
     /**
      * @throws AuthorizationException
      */
-    public function __invoke(ExportTaskRequest $request)
+    public function __invoke(ExportTaskRequest $request): BinaryFileResponse
     {
         $this->authorize('viewAny', Task::class);
-        $format = $request->get('format', 'xlsx');
-        return Excel::download(new TaskExport(), "tasks.{$format}");
+        return Excel::download(new TaskExport(), "tasks.xlsx");
     }
 }

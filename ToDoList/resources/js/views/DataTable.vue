@@ -8,46 +8,67 @@
             />
         </div>
 
-        <el-table :data="filteredTasks" style="width: 100%">
-            <el-table-column prop="id" label="ID" width="50" />
-            <el-table-column prop="title" label="Title" />
-            <el-table-column prop="description" label="Description" />
-            <el-table-column prop="deadline" label="Deadline" width="180" />
-            <el-table-column prop="completed" label="Status" width="180">
-                <template #default="scope">
-                    <span
-                        v-if="scope.row.completed === 1"
-                        class="status done"
-                    >Done
-                    </span>
+        <div class="table">
+            <el-table :data="filteredTasks" style="width: 100%">
+                <el-table-column prop="id" label="ID" width="50" />
+                <el-table-column prop="title" label="Title" />
+                <el-table-column prop="description" label="Description" />
+                <el-table-column prop="deadline" label="Deadline" width="180" />
+                <el-table-column prop="completed" label="Status" width="180">
+                    <template #default="scope">
+                        <span
+                            v-if="scope.row.completed === 1"
+                            class="status done"
+                        >Done
+                        </span>
 
-                    <span
-                        v-else
-                        class="status in-progress"
-                    >In Progress
-                    </span>
-                </template>
-            </el-table-column>
+                        <span
+                            v-else
+                            class="status in-progress"
+                        >In Progress
+                        </span>
+                    </template>
+                </el-table-column>
 
-            <el-table-column label="Actions" width="200">
-                <template #default="scope">
-                    <el-button
-                        class="editButton"
-                        size="small"
-                        @click="updateForm(scope.row)"
-                    >Edit</el-button>
-                    <el-button
-                        class="deleteButton"
-                        @click="deleteTask(scope.row.id)"
-                    >Delete</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+                <el-table-column label="Actions" width="200">
+                    <template #default="scope">
+                        <el-button
+                            class="editButton"
+                            size="small"
+                            @click="updateForm(scope.row)"
+                        >Edit</el-button>
+                        <el-button
+                            class="deleteButton"
+                            @click="deleteTask(scope.row.id)"
+                        >Delete</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
 
-        <div>
+            <el-pagination
+            @current-change="handlePageChange"
+            :current-page="currentPage"
+            :page-size="pageSize"
+            :total="filteredTasks.length"
+            layout="prev, pager, next"
+            background
+            >
+
+            </el-pagination>
+        </div>
+
+        <div class="actions-container">
             <button @click="createForm">
-                create task
+                Create Task
             </button>
+
+            <div>
+                <FileUpload @fileUploaded="fetchTasks" />
+            </div>
+
+            <div>
+                <DownloadFile />
+            </div>
         </div>
     </div>
 
@@ -56,15 +77,16 @@
         @closeForm="closeForm"
         :isUpdate="isUpdate"
         :taskData="currentTask"
-    >
-    </TaskForm>
+    />
+
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
 import TaskForm from "../components/Task/TaskForm.vue";
+import FileUpload from "../components/FileUpload.vue";
+import DownloadFile from "../components/DownloadFile.vue";
 import '../../scss/DataTable.scss'
-
 
 export default {
     data() {
@@ -73,11 +95,15 @@ export default {
             isUpdate: false,
             currentTask: null,
             searchQuery: "",
+            currentPage: 1,
+            pageSize: 10
         };
     },
 
     components: {
-        TaskForm
+        TaskForm,
+        FileUpload,
+        DownloadFile
     },
 
     computed: {
@@ -92,6 +118,12 @@ export default {
                 );
             }
             return this.tasks;
+        },
+
+        paginatedTasks() {
+            const start = (this.currentPage - 1) * this.pageSize;
+            const end = start + this.pageSize;
+            return this.filteredTasks.slice(start, end);
         },
     },
 
@@ -125,6 +157,10 @@ export default {
 
         deleteTask(id) {
             this.deleteTaskAction(id).then(() => (alert("Task is deleted")));
+        },
+
+        handlePageChange(page) {
+            this.currentPage = page;
         }
     },
 
@@ -133,3 +169,24 @@ export default {
     }
 };
 </script>
+
+<style scoped>
+.actions-container {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+</style>

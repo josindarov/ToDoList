@@ -52,7 +52,6 @@ export default {
             commit('setTask', response.data);
         },
         async createTask({ commit}, task) {
-            const createdTask = task
             const response = await axiosInstance.post('/store', task);
             commit('addTask', response.data);
         },

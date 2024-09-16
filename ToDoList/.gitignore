@@ -16,3 +16,6 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/.idea/codeception.xml
+/.idea/compiler.xml
+

@@ -17,6 +17,6 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('/store', StoreController::class)->name('task.store');
     Route::put('/update/{task}', UpdateController::class)->name('task.update');
     Route::delete('/delete/{task}', DestroyController::class)->name('task.destroy');
-    Route::post('/tasks/import', ImportTaskController::class)->name('tasks.import');
-    Route::get('tasks/export', ExportTaskController::class)->name('tasks.export');
+    Route::post('/tasks/upload', ImportTaskController::class)->name('tasks.upload');
+    Route::get('tasks/download', ExportTaskController::class)->name('tasks.download');
 });
