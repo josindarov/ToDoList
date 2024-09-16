@@ -9,15 +9,19 @@
 .el-table td {
     text-align: center;
     padding: 10px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 10px solid #eee;
 }
 
-.el-table .el-table__row:nth-child(odd) {
-    background-color: #f9f9f9;
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.el-table .el-table__row:hover {
-    background-color: #f1f8ff;
+.el-pagination {
+    border-radius: 1px;
+    padding: 1px;
+    background-color: #f7f7f7;
 }
 
 button {
@@ -34,16 +38,24 @@ button {
     text-align: center;
 }
 
-button:hover {
+button:hover .create-btn{
     background-color: deepskyblue;
 }
 
 .editButton {
-    background-color: yellow;
+    background-color: #ffc107;
+    color: #fff;
+    border: none;
 }
 
 .deleteButton {
-    background-color: red;
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+}
+
+.create-btn{
+    background-color: #7ec699;
 }
 
 .blur-background {
@@ -96,4 +108,17 @@ button:hover {
     margin-bottom: 20px;
     padding-bottom: 10px;
     border-color: #4a5568;
+    display: flex;
+}
+
+.actions-container {
+    margin-top: 20px;
+    gap: 10px;
+    display: flex;
+}
+
+.download-button{
+    color: #fff;
+    background-color: #138496;
+
 }

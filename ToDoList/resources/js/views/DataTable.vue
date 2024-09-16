@@ -9,7 +9,7 @@
         </div>
 
         <div class="table">
-            <el-table :data="filteredTasks" style="width: 100%">
+            <el-table :data="paginatedTasks" style="width: 100%">
                 <el-table-column prop="id" label="ID" width="50" />
                 <el-table-column prop="title" label="Title" />
                 <el-table-column prop="description" label="Description" />
@@ -44,25 +44,24 @@
                     </template>
                 </el-table-column>
             </el-table>
+        </div>
 
+        <div class="pagination-container">
             <el-pagination
-            @current-change="handlePageChange"
-            :current-page="currentPage"
-            :page-size="pageSize"
-            :total="filteredTasks.length"
-            layout="prev, pager, next"
-            background
-            >
-
-            </el-pagination>
+                @current-change="handlePageChange"
+                :current-page="currentPage"
+                :page-size="pageSize"
+                :total="filteredTasks.length"
+                background layout="prev, pager, next"
+            />
         </div>
 
         <div class="actions-container">
-            <button @click="createForm">
+            <button class="create-btn" @click="createForm">
                 Create Task
             </button>
 
-            <div>
+            <div >
                 <FileUpload @fileUploaded="fetchTasks" />
             </div>
 
@@ -78,7 +77,6 @@
         :isUpdate="isUpdate"
         :taskData="currentTask"
     />
-
 </template>
 
 <script>
@@ -96,7 +94,7 @@ export default {
             currentTask: null,
             searchQuery: "",
             currentPage: 1,
-            pageSize: 10
+            pageSize: 5
         };
     },
 
@@ -170,23 +168,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.actions-container {
-    margin-top: 20px;
-    display: flex;
-    gap: 10px;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-</style>

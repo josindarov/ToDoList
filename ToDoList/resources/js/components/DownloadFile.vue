@@ -6,6 +6,7 @@
 
 <script>
 import axiosInstance from "../axiosInstance";
+import '../../scss/DataTable.scss'
 
 export default {
     methods: {

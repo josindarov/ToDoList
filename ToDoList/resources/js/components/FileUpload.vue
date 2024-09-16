@@ -15,6 +15,8 @@ import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import axiosInstance from "../axiosInstance";
 import { mapActions } from "vuex";
+import '../../scss/DataTable.scss'
+import '../../scss/FileForm.scss'
 
 export default {
     data() {
@@ -48,7 +50,7 @@ export default {
                     }),
             });
 
-            const { setFieldValue, errors, isValid } = useForm({
+            const { setFieldValue, errors} = useForm({
                 validationSchema: schema,
             });
 
@@ -67,7 +69,7 @@ export default {
             formData.append('file', this.formData.file);
 
             try {
-                const response = await axiosInstance.post('/tasks/upload', formData, {
+                await axiosInstance.post('/tasks/upload', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
@@ -75,8 +77,7 @@ export default {
 
                 alert('File uploaded successfully');
 
-                // Re-fetch tasks after successful upload
-                this.fetchTasks();
+                await this.fetchTasks();
             } catch (error) {
                 alert('Failed to upload the file');
             }
@@ -85,54 +86,3 @@ export default {
 };
 </script>
 
-<style>
-.upload-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.action-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.create-task-btn, .download-btn {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    color: white;
-}
-
-.create-task-btn {
-    background-color: #4caf50;
-}
-
-.download-btn {
-    background-color: #1e6c93;
-}
-
-.file-upload-form {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.file-input-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.upload-btn {
-    padding: 8px 16px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-</style>
