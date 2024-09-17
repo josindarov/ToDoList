@@ -70,12 +70,15 @@ button:hover .create-btn{
     color: white;
 }
 
+.status.notStarted {
+    background-color: #e74c3c;
+}
 .status.done {
     background-color: #28a745;
 }
 
 .status.in-progress {
-    background-color: #e74c3c;
+    background-color: #ba8b00;
     color: #000;
 
     .controls {

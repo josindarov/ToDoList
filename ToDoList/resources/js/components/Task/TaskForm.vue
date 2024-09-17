@@ -28,7 +28,9 @@ export default {
                 title: null,
                 description: null,
                 deadline: Date.now(),
-                completed: null
+                category: null,
+                category_id: 1,
+                status: 1
             }),
         },
 
@@ -49,7 +51,6 @@ export default {
                     value: this.taskData.title,
                     rules: Yup.string().required()
                     },
-
                     {
                         label: 'Task Description',
                         name: 'description',
@@ -57,7 +58,6 @@ export default {
                         value: this.taskData.description,
                         rules: Yup.string().required()
                     },
-
                     {
                         label: 'Task Deadline',
                         name: 'deadline',
@@ -66,17 +66,24 @@ export default {
                         value: this.taskData.deadline,
                         rules: Yup.string().required()
                     },
-
+                    {
+                        label: 'Task Category',
+                        name: 'category',
+                        as: 'input',
+                        value: this.taskData.category,
+                        rules: Yup.string().required()
+                    },
                     {
                         label: 'Task Status',
-                        name: 'completed',
-                        type: 'boolean',
+                        name: 'status',
+                        type: 'number',
                         as: 'select',
                         options: [
-                            { text: 'In Progress', value: 0 },
-                            { text: 'Done', value: 1 }
+                            {text: 'Not Started', value: 1 },
+                            { text: 'In Progress', value: 2 },
+                            { text: 'Done', value: 3 }
                         ],
-                        value: this.taskData.completed
+                        value: this.taskData.status
                     }
                 ]
             }
@@ -92,10 +99,13 @@ export default {
 
         handleSubmit(data) {
             const formData = new FormData();
+
             formData.append('title', data.title);
             formData.append('description', data.description);
             formData.append('deadline', data.deadline);
-            formData.append('completed', data.completed);
+            formData.append('category', data.category);
+            formData.append('category_id', this.taskData.category_id);
+            formData.append('status', data.status);
 
             if(this.isUpdate){
                 formData.append("_method", "PUT")

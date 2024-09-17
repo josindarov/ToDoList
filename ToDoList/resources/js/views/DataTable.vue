@@ -14,18 +14,22 @@
                 <el-table-column prop="title" label="Title" />
                 <el-table-column prop="description" label="Description" />
                 <el-table-column prop="deadline" label="Deadline" width="180" />
-                <el-table-column prop="completed" label="Status" width="180">
+                <el-table-column prop="status" label="Status" width="180">
                     <template #default="scope">
                         <span
-                            v-if="scope.row.completed === 1"
-                            class="status done"
-                        >Done
+                            v-if="scope.row.status === 1"
+                            class="status notStarted"
+                        >Not Started
                         </span>
-
                         <span
-                            v-else
+                            v-else-if="scope.row.status === 2"
                             class="status in-progress"
                         >In Progress
+                        </span>
+                        <span
+                            v-else-if="scope.row.status === 3"
+                            class="status done"
+                        >Done
                         </span>
                     </template>
                 </el-table-column>

@@ -10,7 +10,9 @@ export default {
             title: '',
             description: '',
             deadline: '',
-            completed: null
+            category_id: null,
+            category: '',
+            status: null
         }
     },
 
