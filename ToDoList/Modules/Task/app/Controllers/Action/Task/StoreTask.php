@@ -13,9 +13,11 @@ class StoreTask
         // Create a new task using the validated request data
         return Task::create([
             'user_id' => $user_id = Auth::id(),
+            'category_id' => $request->input('category_id'),
             'title' => $request->input('title'),
             'description' => $request->input('description'),
-            'deadline' => $request->input('deadline')
+            'deadline' => $request->input('deadline'),
+            'status' => $request->input('status'),
         ]);
     }
 }
