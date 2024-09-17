@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('title');
-            $table->text('description');
-            $table->boolean('completed')->default(false);
-            $table->timestamp('deadline');
+            $table->string('name');
+            \Kalnoy\Nestedset\NestedSet::columns($table);
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('categories');
     }
 };
