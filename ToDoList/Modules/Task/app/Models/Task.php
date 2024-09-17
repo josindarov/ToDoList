@@ -7,9 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\User\app\Models\User;
 
-/**
- * @method static select(string $string, string $string1, string $string2, string $string3, string $string4, string $string5)
- */
 class Task extends Model
 {
     use HasFactory;

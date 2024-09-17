@@ -196,7 +196,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         \Modules\Task\app\Providers\TaskServiceProvider::class,
-        \Modules\User\app\Providers\UserServiceProvider::class
+        \Modules\User\app\Providers\UserServiceProvider::class,
+
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
     ],
 
