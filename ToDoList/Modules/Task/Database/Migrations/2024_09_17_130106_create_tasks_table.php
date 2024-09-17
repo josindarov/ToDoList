@@ -20,7 +20,7 @@ return new class extends Migration
             \Kalnoy\Nestedset\NestedSet::columns($table);
             $table->string('title');
             $table->text('description');
-            $table->integer('completed');
+            $table->integer('status');
             $table->timestamp('deadline');
             $table->timestamps();
         });
