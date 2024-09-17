@@ -46,6 +46,7 @@ class TasksImport implements ToCollection, WithHeadingRow
                 'title' => $taskData['title'],
                 'description' => $taskData['description'],
                 'deadline' => $deadline,
+                'status' => $taskData['status'],
             ]);
         }
     }
@@ -59,6 +60,7 @@ class TasksImport implements ToCollection, WithHeadingRow
                 'title' => $row['title'],
                 'description' => $row['description'],
                 'deadline' => $row['deadline'],
+                'status' => $row['status']
             ];
         }
     }

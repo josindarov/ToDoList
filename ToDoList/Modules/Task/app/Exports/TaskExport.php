@@ -3,7 +3,6 @@
 namespace Modules\Task\app\Exports;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Modules\Task\app\Models\Task;
