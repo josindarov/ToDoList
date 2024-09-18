@@ -2,9 +2,9 @@
     <div class="upload-container">
         <form @submit.prevent="submitForm" class="file-upload-form">
             <div class="file-input-container">
-                <label for="file">Select Excel File:</label>
+                <label for="file">{{ $t('selectFile') }}</label>
                 <input type="file" id="file" @change="handleFileChange" />
-                <button type="submit" class="upload-btn">Upload</button>
+                <button type="submit" class="upload-btn">{{ $t('upload') }}</button>
             </div>
         </form>
     </div>

@@ -19,17 +19,17 @@
                         <span
                             v-if="scope.row.status === 1"
                             class="status notStarted"
-                        >Not Started
+                        >{{ $t('notStarted') }}
                         </span>
                         <span
                             v-else-if="scope.row.status === 2"
                             class="status in-progress"
-                        >In Progress
+                        >{{ $t('inProgress') }}
                         </span>
                         <span
                             v-else-if="scope.row.status === 3"
                             class="status done"
-                        >Done
+                        >{{ $t('done') }}
                         </span>
                     </template>
                 </el-table-column>
@@ -62,7 +62,7 @@
 
         <div class="actions-container">
             <button class="create-btn" @click="createForm">
-                Create Task
+                {{ $t('createTask') }}
             </button>
 
             <div >

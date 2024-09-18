@@ -3,7 +3,7 @@
         <div>
             <div>
                 <h3> {{formTitle()}} Task</h3>
-                <button class="overlay" @click="closeForm">Close</button>
+                <button class="overlay" @click="closeForm">{{ $t('close') }}</button>
             </div>
 
             <DynamicFields :schema="formSchema" :submit-text="formTitle()" @onSubmit="handleSubmit">

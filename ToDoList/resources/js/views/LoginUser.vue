@@ -3,18 +3,18 @@
         <h2>Login</h2>
         <form @submit.prevent="loginUser">
             <div>
-                <label for="email">Email:</label>
+                <label for="email">{{ $t('email') }}</label>
                 <input type="email" v-model="form.email" required>
             </div>
             <div>
-                <label for="password">Password:</label>
+                <label for="password">{{ $t('password') }}:</label>
                 <input type="password" v-model="form.password" required>
             </div>
             <button type="submit" >
-                Login
+                {{ $t('login') }}
             </button>
         </form>
-        <button @click="navigateToRegister">Register</button>
+        <button @click="navigateToRegister">{{ $t('register') }}</button>
     </div>
 </template>
 

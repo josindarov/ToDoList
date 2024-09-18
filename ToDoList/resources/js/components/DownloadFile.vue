@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="download-button" @click="downloadFile">Download</button>
+        <button class="download-button" @click="downloadFile">{{$t('download')}}</button>
     </div>
 </template>
 
@@ -20,7 +20,7 @@ export default {
                 })
 
             } catch (error) {
-                alert('Failed to download the file');
+                alert($t('downloadFail'));
             }
         },
     },

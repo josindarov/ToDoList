@@ -3,19 +3,19 @@
         <h2>Register</h2>
         <form @submit.prevent="register">
             <div>
-                <label for="name">Name:</label>
+                <label for="name">{{ $t('name') }}</label>
                 <input type="text" v-model="form.name" required>
             </div>
             <div>
-                <label for="email">Email:</label>
+                <label for="email">{{ $t('email') }}</label>
                 <input type="email" v-model="form.email" required>
             </div>
             <div>
-                <label for="password">Password:</label>
+                <label for="password">{{ $t('password') }}</label>
                 <input type="password" v-model="form.password" required>
             </div>
             <div>
-                <label for="password_confirmation">Confirm Password:</label>
+                <label for="password_confirmation">{{ $t('confirmPassword') }}</label>
                 <input type="password" v-model="form.password_confirmation" required>
             </div>
             <button type="submit">Register</button>
@@ -72,7 +72,7 @@ export default {
 
         async register() {
             await this.registration().then(() => {
-                this.$router.push({name: 'ListOfTasks'})
+                this.$router.push({name: 'LoginUser'})
             })
         },
     }
