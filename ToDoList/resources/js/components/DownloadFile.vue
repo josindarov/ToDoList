@@ -7,20 +7,18 @@
 <script>
 import axiosInstance from "../axiosInstance";
 import '../../scss/DataTable.scss'
+import {saveAs} from 'file-saver';
 
 export default {
     methods: {
         async downloadFile() {
             try {
-                const response = await axiosInstance.get('/tasks/download', {
-                    responseType: 'blob',
-                });
-                const url = window.URL.createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', 'tasks.xlsx'); // Filename
-                document.body.appendChild(link);
-                link.click();
+                await axiosInstance.get('/tasks/download', {
+                    responseType: "blob",
+                }).then(response => {
+                    saveAs(response.data, 'task.xlsx');
+                })
+
             } catch (error) {
                 alert('Failed to download the file');
             }

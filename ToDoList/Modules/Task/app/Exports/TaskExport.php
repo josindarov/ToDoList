@@ -18,7 +18,7 @@ class TaskExport implements FromCollection, WithBatchInserts, WithHeadings
             'title',
             'description',
             'deadline',
-            'completed'
+            'status'
         )->get();
     }
 
