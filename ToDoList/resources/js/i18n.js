@@ -18,7 +18,7 @@ const messages = {
         register: 'Register',
         confirmPassword: 'Confirm Password',
         notStarted: 'Not Started',
-        inProgress: 'In-Progress',
+        inProgress: 'In Progress',
         done: 'Done'
     },
     ru: {
