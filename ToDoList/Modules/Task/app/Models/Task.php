@@ -11,8 +11,7 @@ use Modules\User\app\Models\User;
 
 class Task extends Model
 {
-    use HasFactory;
-    use NodeTrait;
+    use HasFactory, NodeTrait;
 
     protected $fillable = [
         'category_id',
@@ -20,11 +19,11 @@ class Task extends Model
         'title',
         'description',
         'status',
-        'deadline'
+        'deadline',
     ];
 
     protected $casts = [
-      'deadline' => 'datetime:Y-m-d'
+        'deadline' => 'datetime:Y-m-d',
     ];
 
     // Relation between user and task
@@ -33,10 +32,10 @@ class Task extends Model
         return $this->belongsTo(User::class);
     }
 
-
     // Relation between category and task
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
+
 }

@@ -28,9 +28,8 @@ export default {
                 title: null,
                 description: null,
                 deadline: Date.now(),
-                category: null,
-                category_id: 1,
-                status: 1
+                category_id: null,
+                status: null
             }),
         },
 
@@ -68,10 +67,15 @@ export default {
                     },
                     {
                         label: 'Task Category',
-                        name: 'category',
-                        as: 'input',
-                        value: this.taskData.category,
-                        rules: Yup.string().required()
+                        name: 'category_id',
+                        type: 'number',
+                        as: 'select',
+                        options: [
+                            {text: 'Personal', value: 1 },
+                            { text: 'Work', value: 2 },
+                            { text: 'Team', value: 3 }
+                        ],
+                        value: this.taskData.category_id
                     },
                     {
                         label: 'Task Status',
@@ -103,8 +107,7 @@ export default {
             formData.append('title', data.title);
             formData.append('description', data.description);
             formData.append('deadline', data.deadline);
-            formData.append('category', data.category);
-            formData.append('category_id', this.taskData.category_id);
+            formData.append('category_id', data.category_id);
             formData.append('status', data.status);
 
             if(this.isUpdate){
