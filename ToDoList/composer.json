@@ -13,7 +13,9 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "3.2",
         "laravel/tinker": "^2.7",
-        "maatwebsite/excel": "*"
+        "maatwebsite/excel": "*",
+        "sebdesign/laravel-state-machine": "^3.4",
+        "symfony/event-dispatcher": "^7.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

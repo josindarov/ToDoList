@@ -13,6 +13,7 @@ class Category extends Model
 
     protected $fillable = ['name'];
 
+    // Relationship with Task
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
