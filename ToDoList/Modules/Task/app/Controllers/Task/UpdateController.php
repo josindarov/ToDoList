@@ -5,11 +5,18 @@ namespace Modules\Task\app\Controllers\Task;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Modules\Task\app\Controllers\Action\Task\UpdateTask;
 use Modules\Task\app\Models\Task;
 use Modules\Task\app\Requests\UpdateTaskRequest;
 
 class UpdateController extends Controller
 {
+    private UpdateTask $updateTask;
+
+    function __construct(UpdateTask $updateTask)
+    {
+        $this->updateTask = $updateTask;
+    }
     /**
      * Handle the incoming request.
      * @return JsonResponse
@@ -18,16 +25,9 @@ class UpdateController extends Controller
     public function __invoke(UpdateTaskRequest $request, Task $task): JsonResponse
     {
         $this->authorize('update', $task);
+        $validated = $request->validated();
+        $this->updateTask->handle($validated, $task);
 
-        if(!$task)
-        {
-            return response()->json('Task is not found');
-        }
-        else
-        {
-            $task->update($request->only('title', 'description', 'deadline', 'status', 'category_id'));
-
-            return response()->json($task);
-        }
+        return response()->json("Task updated successfully");
     }
 }

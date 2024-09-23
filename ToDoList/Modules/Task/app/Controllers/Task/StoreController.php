@@ -29,9 +29,9 @@ class StoreController extends Controller
     public function __invoke(StoreTaskRequest $request): JsonResponse
     {
         $this->authorize('create', Task::class);
-        $task = $this->storeTask->handle($request);
-        $task->save();
+        $validated = $request->validated();
+        $this->storeTask->handle($validated);
 
-        return response()->json($task);
+        return response()->json("Task Created Successfully");
     }
 }

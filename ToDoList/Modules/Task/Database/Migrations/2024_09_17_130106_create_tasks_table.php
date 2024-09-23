@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->timestamp('deadline');
-            $table->integer('status')->default(1);
+            $table->string('status');
             $table->timestamps();
         });
     }
