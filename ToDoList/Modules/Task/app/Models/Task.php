@@ -3,6 +3,7 @@
 namespace Modules\Task\app\Models;
 
 use App\Models\Category;
+use Iben\Statable\Statable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,7 +12,7 @@ use Modules\User\app\Models\User;
 
 class Task extends Model
 {
-    use HasFactory, NodeTrait;
+    use HasFactory, NodeTrait, Statable;
 
     protected $fillable = [
         'category_id',
@@ -38,4 +39,13 @@ class Task extends Model
         return $this->belongsTo(Category::class);
     }
 
+    protected function getGraph(): string
+    {
+        return 'task';
+    }
+
+    protected function saveBeforeTransition(): bool
+    {
+        return true;
+    }
 }

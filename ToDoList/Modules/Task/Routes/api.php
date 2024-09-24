@@ -3,11 +3,13 @@
 namespace Modules\Task\Routes;
 
 use Illuminate\Support\Facades\Route;
+use Modules\Task\app\Controllers\Task\CompleteTaskStatusController;
 use Modules\Task\app\Controllers\Task\DestroyController;
 use Modules\Task\app\Controllers\Task\ExportTaskController;
 use Modules\Task\app\Controllers\Task\ImportTaskController;
 use Modules\Task\app\Controllers\Task\IndexController;
 use Modules\Task\app\Controllers\Task\ShowController;
+use Modules\Task\app\Controllers\Task\StartTaskStatusController;
 use Modules\Task\app\Controllers\Task\StoreController;
 use Modules\Task\app\Controllers\Task\UpdateController;
 
@@ -19,4 +21,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::delete('/delete/{task}', DestroyController::class)->name('task.destroy');
     Route::post('/tasks/upload', ImportTaskController::class)->name('tasks.upload');
     Route::get('tasks/download', ExportTaskController::class)->name('tasks.download');
+
+    Route::post('/status/start/{task}', [StartTaskStatusController::class, 'statusChangeToStart'])->name('status.start');
+    Route::post('status/complete/{task}', [CompleteTaskStatusController::class, 'statusChangeToComplete'])->name('status.complete');
 });
