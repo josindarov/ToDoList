@@ -10,12 +10,15 @@
                 :name="name"
                 v-bind="attrs"
             >
-                <option v-if="as === 'select'" v-for="option in attrs.options" :key="option.value" :value="option.value">
-                    {{ option.text }}
-                </option>
+                <!-- Render slot based on the field name -->
+                <template v-if="$slots[name]">
+                    <slot :name="name"/>
+                </template>
             </Field>
             <ErrorMessage :name="name" class="text-danger"/>
         </div>
+
+        <slot name="selection"/>
 
         <div>
             <button class="btn btn-primary">{{this.submitText}}</button>
@@ -32,7 +35,6 @@ export default {
         Form,
         Field,
     },
-
     props: {
         schema: {
             type: Object,

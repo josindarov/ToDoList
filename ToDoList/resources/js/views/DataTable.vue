@@ -80,11 +80,12 @@
         @closeForm="closeForm"
         :isUpdate="isUpdate"
         :taskData="currentTask"
+        :categories="categories"
     />
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import {mapActions, mapGetters, mapState} from "vuex";
 import TaskForm from "../components/Task/TaskForm.vue";
 import FileUpload from "../components/FileUpload.vue";
 import DownloadFile from "../components/DownloadFile.vue";
@@ -110,8 +111,10 @@ export default {
 
     computed: {
         ...mapGetters({
-            tasks: 'task/getTasks'
+            tasks: 'task/getTasks',
         }),
+
+        ...mapState('category', {categories: "categories"}),
 
         filteredTasks() {
             if (this.searchQuery) {
@@ -119,6 +122,7 @@ export default {
                     task.title.toLowerCase().includes(this.searchQuery.toLowerCase())
                 );
             }
+
             return this.tasks;
         },
 
@@ -133,6 +137,7 @@ export default {
         ...mapActions({
             fetchTasks: "task/fetchTasks",
             deleteTaskAction: "task/deleteTask",
+            fetchCategories: "category/fetchCategories"
         }),
 
         createForm() {
@@ -155,6 +160,7 @@ export default {
 
         async fetchData() {
             await this.fetchTasks();
+            await this.fetchCategories();
         },
 
         deleteTask(id) {
