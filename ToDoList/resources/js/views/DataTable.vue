@@ -16,21 +16,16 @@
                 <el-table-column prop="deadline" label="Deadline" width="180" />
                 <el-table-column prop="status" label="Status" width="180">
                     <template #default="scope">
-                        <span
-                            v-if="scope.row.status === 1"
-                            class="status notStarted"
-                        >{{ $t('notStarted') }}
-                        </span>
-                        <span
-                            v-else-if="scope.row.status === 2"
-                            class="status in-progress"
-                        >{{ $t('inProgress') }}
-                        </span>
-                        <span
-                            v-else-if="scope.row.status === 3"
-                            class="status done"
-                        >{{ $t('done') }}
-                        </span>
+                        <el-select
+                            v-model="scope.row.status"
+                            @change="handleStatusChange(scope.row)"
+                            placeholder="Select"
+                            style="width: 100%"
+                        >
+                            <el-option label="Not Started" value="Not Started" />
+                            <el-option label="In Progress" value="In Progress" />
+                            <el-option label="Completed" value="Completed" />
+                        </el-select>
                     </template>
                 </el-table-column>
 
@@ -137,7 +132,9 @@ export default {
         ...mapActions({
             fetchTasks: "task/fetchTasks",
             deleteTaskAction: "task/deleteTask",
-            fetchCategories: "category/fetchCategories"
+            fetchCategories: "category/fetchCategories",
+            startTask: "task/startTask",
+            completeTask: "task/completeTask",
         }),
 
         createForm() {
@@ -163,12 +160,28 @@ export default {
             await this.fetchCategories();
         },
 
-        deleteTask(id) {
-            this.deleteTaskAction(id).then(() => (alert("Task is deleted")));
+        async deleteTask(id) {
+            await this.deleteTaskAction(id).then(() => (alert("Task is deleted")));
         },
 
         handlePageChange(page) {
             this.currentPage = page;
+        },
+
+        async handleStatusChange(task) {
+            try {
+                console.log(task.status);
+                if (task.status === "In Progress") {
+                    await this.startTask(task.id);
+                } else if (task.status === "Completed") {
+                    await this.completeTask(task.id);
+                } else {
+                    alert("Invalid status transition");
+                }
+                await this.fetchTasks();
+            } catch (error) {
+                alert("An error occurred while changing status");
+            }
         }
     },
 

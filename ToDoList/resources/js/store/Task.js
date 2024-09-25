@@ -3,36 +3,16 @@ import axiosInstance from "../axiosInstance";
 export default {
     namespaced: true,
     state:{
-        tasks: [],
-        task: null,
-        form: {
-            id: null,
-            title: '',
-            description: '',
-            deadline: '',
-            category_id: null,
-            category: '',
-            status: null
-        }
+        tasks: []
     },
 
     mutations: {
         setTasks(state, payload) {
             state.tasks = payload;
         },
-
         addTask(state, payload) {
             state.tasks.push(payload);
         },
-
-        setFormField(state, {field, value}) {
-            state.form[field] = value;
-        },
-
-        setTask(state, payload) {
-            state.task = payload;
-        },
-
         updateTask(state, updatedTask) {
             const index = state.tasks.findIndex(task => task.id === updatedTask.id);
             if (index !== -1) {
@@ -49,15 +29,10 @@ export default {
             const response = await axiosInstance.get('/index');
             commit('setTasks', response.data);
         },
-        async fetchTask({ commit }, taskId) {
-            const response = await axiosInstance.get(`/show/${taskId}`);
-            commit('setTask', response.data);
-        },
         async createTask({ commit}, task) {
             const response = await axiosInstance.post('/store', task);
             commit('addTask', response.data);
         },
-
         async updateTask({ commit }, {id, task}) {
             try {
                 const response = await axiosInstance.put(`/update/${id}`, task);
@@ -67,21 +42,20 @@ export default {
                 throw error;
             }
         },
-
         async deleteTask({ commit }, taskId) {
             await axiosInstance.delete(`/delete/${taskId}`);
             commit('deleteTask', taskId);
-        }
+        },
+        async startTask({commit}, taskId){
+            await axiosInstance.post(`/status/start/${taskId}`);
+        },
+        async completeTask({commit}, taskId){
+            await axiosInstance.post(`/status/complete/${taskId}`);
+        },
     },
-
     getters: {
         getTasks(state) {
             return state.tasks;
-        },
-
-        getTask(state){
-            return state.task;
         }
-
     }
 }

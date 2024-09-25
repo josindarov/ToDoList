@@ -19,7 +19,9 @@ const messages = {
         confirmPassword: 'Confirm Password',
         notStarted: 'Not Started',
         inProgress: 'In Progress',
-        done: 'Done'
+        completed: 'Completed',
+        invalidTransition: 'Invalid status transition',
+        errorOnChangeStatus: 'An error occurred while changing status'
     },
     ru: {
         createTask: 'Создать задачу',
@@ -39,7 +41,9 @@ const messages = {
         confirmPassword: 'Подтвердите пароль',
         notStarted: 'Не начато',
         inProgress: 'В ходе выполнения',
-        done: 'Сделанный'
+        done: 'Сделанный',
+        invalidTransition: 'Неверный переход статуса',
+        errorOnChangeStatus: 'Произошла ошибка при изменении статуса'
     },
 };
 
