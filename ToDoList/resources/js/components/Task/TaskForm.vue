@@ -24,7 +24,7 @@ import SelectCategory from '../SelectCategory.vue';
 import '../../../scss/TaskForm.scss';
 
 export default {
-    components: {DynamicFields, SelectCategory},
+    components: { DynamicFields, SelectCategory },
     props: {
         taskData: {
             type: Object,
@@ -34,7 +34,7 @@ export default {
                 description: null,
                 deadline: Date.now(),
                 category_id: null,
-                status: "Completed"
+                status: null,
             }),
         },
         isUpdate: {
@@ -44,44 +44,63 @@ export default {
         categories: {
             type: Array,
             required: true,
-        }
+        },
     },
     data() {
         return {
-            formSchema: {
-                fields: [
-                    {
-                        label: 'Task Title',
-                        name: 'title',
-                        as: 'input',
-                        value: this.taskData.title,
-                        rules: Yup.string().required(),
-                    },
-                    {
-                        label: 'Task Description',
-                        name: 'description',
-                        as: 'input',
-                        value: this.taskData.description,
-                        rules: Yup.string().required(),
-                    },
-                    {
-                        label: 'Task Deadline',
-                        name: 'deadline',
-                        type: 'date',
-                        as: 'input',
-                        value: this.taskData.deadline,
-                        rules: Yup.string().required(),
-                    }
-                ]
-            },
-            category: this.taskData.category_id || null
+            category: this.taskData.category_id || null,
         };
+    },
+    computed: {
+        formSchema() {
+            const fields = [
+                {
+                    label: 'Task Title',
+                    name: 'title',
+                    as: 'input',
+                    value: this.taskData.title,
+                    rules: Yup.string().required(),
+                },
+                {
+                    label: 'Task Description',
+                    name: 'description',
+                    as: 'input',
+                    value: this.taskData.description,
+                    rules: Yup.string().required(),
+                },
+                {
+                    label: 'Task Deadline',
+                    name: 'deadline',
+                    type: 'date',
+                    as: 'input',
+                    value: this.taskData.deadline,
+                    rules: Yup.string().required(),
+                },
+            ];
+
+            // Conditionally add the status field only for task creation
+            if (!this.isUpdate) {
+                fields.push({
+                    label: 'Task Status',
+                    name: 'status',
+                    as: 'select',
+                    type: 'string',
+                    options: [
+                        { text: 'Not Started', value: 'Not Started' },
+                        { text: 'In Progress', value: 'In Progress' },
+                        { text: 'Done', value: 'Done' },
+                    ],
+                    value: this.taskData.status,
+                });
+            }
+
+            return { fields };
+        },
     },
     methods: {
         ...mapActions({
             createTask: 'task/createTask',
             updateTask: 'task/updateTask',
-            fetchTask: 'task/fetchTask',
         }),
         handleSubmit(data) {
             if (this.category === null) return;
@@ -91,11 +110,14 @@ export default {
             formData.append('description', data.description);
             formData.append('deadline', data.deadline);
             formData.append('category_id', this.category);
-            formData.append('status', this.taskData.status);
+
+            if (!this.isUpdate) {
+                formData.append('status', data.status);
+            }
 
             if (this.isUpdate) {
                 formData.append("_method", "PUT");
-                this.updateTask({id: this.taskData.id, task: formData}).then(() => {
+                this.updateTask({ id: this.taskData.id, task: formData }).then(() => {
                     this.closeForm();
                 });
             } else {
@@ -106,14 +128,15 @@ export default {
         },
         closeForm() {
             this.$emit('closeForm');
-            this.$router.push({name: "ListOfTasks"});
+            this.$router.push({ name: 'ListOfTasks' });
         },
         formTitle() {
             return this.isUpdate ? 'Update' : 'Create';
         },
         selectedCategory(id) {
             this.category = id;
-        }
-    }
+        },
+    },
 };
+
 </script>

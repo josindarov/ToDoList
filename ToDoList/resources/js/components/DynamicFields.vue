@@ -10,10 +10,10 @@
                 :name="name"
                 v-bind="attrs"
             >
-                <!-- Render slot based on the field name -->
-                <template v-if="$slots[name]">
-                    <slot :name="name"/>
-                </template>
+                <slot name="selection"/>
+                <option v-if="as === 'select'" v-for="option in attrs.options" :key="option.value" :value="option.value">
+                    {{ option.text }}
+                </option>
             </Field>
             <ErrorMessage :name="name" class="text-danger"/>
         </div>
