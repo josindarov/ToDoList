@@ -14,6 +14,7 @@ use Modules\Task\app\Controllers\Task\StoreController;
 use Modules\Task\app\Controllers\Task\UpdateController;
 
 Route::middleware('auth:sanctum')->group(function (){
+    // Routes for Task itself
     Route::get('/index', IndexController::class)->name('task.index');
     Route::get('/show/{task}', ShowController::class)->name('task.show');
     Route::post('/store', StoreController::class)->name('task.store');
@@ -22,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('/tasks/upload', ImportTaskController::class)->name('tasks.upload');
     Route::get('tasks/download', ExportTaskController::class)->name('tasks.download');
 
-    Route::post('/status/start/{task}', [StartTaskStatusController::class, 'statusChangeToStart'])->name('status.start');
-    Route::post('status/complete/{task}', [CompleteTaskStatusController::class, 'statusChangeToComplete'])->name('status.complete');
+    // Routes for task status
+    Route::post('/status/start/{task}', StartTaskStatusController::class)->name('status.start');
+    Route::post('status/complete/{task}', CompleteTaskStatusController::class)->name('status.complete');
 });

@@ -5,25 +5,33 @@ namespace Modules\Task\app\Controllers\Task;
 use App\Http\Controllers\Controller;
 use Illuminate\Container\EntryNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Modules\Task\app\Controllers\Action\Task\StartTask;
 use Modules\Task\app\Models\Task;
 use SM\SMException;
 
-
 class StartTaskStatusController extends Controller
 {
-    /**
-     * @throws EntryNotFoundException
-     * @throws SMException
-     */
-    public function statusChangeToStart(Task $task): JsonResponse
+    private StartTask $startTask;
+
+    function __construct(StartTask $startTask)
     {
-        $message = "You can not change to this status";
-        if($task->canApply(\Modules\Task\app\Models\ConstNames::START))
+        $this->startTask = $startTask;
+    }
+
+    /**
+     * @throws SMException
+     * @throws EntryNotFoundException
+     */
+    public function __invoke(Task $task): JsonResponse
+    {
+        try
         {
-            $task->update(['status' => \Modules\Task\app\Models\ConstNames::IN_PROGRESS]);
-            $message = "Status is changed";
+            $result = $this->startTask->handle($task);
+        }
+        catch(SmException $e){
+            throw new SMException($e);
         }
 
-        return response()->json($message);
+        return response()->json($result);
     }
 }
