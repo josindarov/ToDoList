@@ -199,6 +199,7 @@ return [
         \Modules\User\app\Providers\UserServiceProvider::class,
 
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
 
     ],
 
@@ -216,6 +217,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         "Excel" => Maatwebsite\Excel\Facades\Excel::class,
+        "Permissions" => Spatie\Permission\PermissionServiceProvider::class,
     ])->toArray(),
 
 ];

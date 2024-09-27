@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "*",
         "sebdesign/laravel-state-machine": "^3.4",
+        "spatie/laravel-permission": "^6.9",
         "symfony/event-dispatcher": "^7.1"
     },
     "require-dev": {

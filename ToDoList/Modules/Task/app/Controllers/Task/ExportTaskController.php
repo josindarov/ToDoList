@@ -18,7 +18,7 @@ class ExportTaskController extends Controller
      */
     public function __invoke(ExportTaskRequest $request): BinaryFileResponse
     {
-        $this->authorize('viewAny', Task::class);
+        $this->authorize('export', Task::class);
         return Excel::download(new TaskExport(), "tasks.xlsx");
     }
 }

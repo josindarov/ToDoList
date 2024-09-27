@@ -11,7 +11,7 @@ class RegisterUser
     public function execute(Request $request): \Illuminate\Http\JsonResponse
     {
         $user = $this->createUser($request);
-
+        $user->assignRole('user');
         $token = $user->createToken($request->name)->plainTextToken;
 
         return response()->json(['user' => $user, 'token' => $token]);

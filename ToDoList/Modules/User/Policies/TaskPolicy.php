@@ -8,59 +8,41 @@ use Modules\User\app\Models\User;
 
 class TaskPolicy
 {
-    /**
-     * Determine whether the user can view any tasks.
-     */
     public function viewAny(User $user): Response
     {
-        return Response::allow();
+        return $user->can('view tasks') ? Response::allow() : Response::deny("You don't have permission to view tasks.");
     }
 
-    /**
-     * Determine whether the user can view the task.
-     */
     public function view(User $user, Task $task): Response
     {
-        return $user->id === $task->user_id
+        return $user->id === $task->user_id && $user->can('view tasks')
             ? Response::allow()
             : Response::deny("You don't own this task.");
     }
 
-    /**
-     * Determine whether the user can create tasks.
-     */
     public function create(User $user): Response
     {
-        return Response::allow();
+        return $user->can('create tasks') ? Response::allow() : Response::deny("You don't have permission to create tasks.");
     }
 
-    /**
-     * Determine whether the user can update the task.
-     */
     public function update(User $user, Task $task): Response
     {
-        return $user->id === $task->user_id
+        return $user->id === $task->user_id && $user->can('edit tasks')
             ? Response::allow()
-            : Response::deny("You don't own this task.");
+            : Response::deny("You don't have permission to update this task.");
     }
 
-    /**
-     * Determine whether the user can delete the task.
-     */
     public function delete(User $user, Task $task): Response
     {
-        return $user->id === $task->user_id
+        return $user->id === $task->user_id && $user->can('delete tasks')
             ? Response::allow()
-            : Response::deny("You don't own this task.");
+            : Response::deny("You don't have permission to delete this task.");
     }
 
-    /**
-     * Determine whether the user can restore the task.
-     */
-    public function restore(User $user, Task $task): Response
+    public function export(User $user): Response
     {
-        return $user->id === $task->user_id
+        return $user->can('export tasks')
             ? Response::allow()
-            : Response::deny("You don't own this task.");
+            : Response::deny("You don't have permission to export tasks.");
     }
 }
