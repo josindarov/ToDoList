@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Task\app\Models\Task;
 
-class StoreTask
+class StoreTaskAction
 {
     public function handle(array $data): void
     {
@@ -18,6 +18,7 @@ class StoreTask
             'deadline' => $data['deadline'],
             'status' => $data['status'],
         ]);
+
         $task->save();
     }
 }

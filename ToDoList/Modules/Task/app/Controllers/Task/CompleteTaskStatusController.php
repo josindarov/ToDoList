@@ -5,15 +5,15 @@ namespace Modules\Task\app\Controllers\Task;
 use App\Http\Controllers\Controller;
 use Illuminate\Container\EntryNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Modules\Task\app\Controllers\Action\Task\CompleteTask;
+use Modules\Task\app\Controllers\Action\Task\CompleteTaskAction;
 use Modules\Task\app\Models\Task;
 use SM\SMException;
 
 class CompleteTaskStatusController extends Controller
 {
-    private CompleteTask $completeTask;
+    private CompleteTaskAction $completeTask;
 
-    function __construct(CompleteTask $completeTask)
+    function __construct(CompleteTaskAction $completeTask)
     {
         $this->completeTask = $completeTask;
     }

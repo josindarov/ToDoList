@@ -15,15 +15,15 @@ use Modules\Task\app\Controllers\Task\UpdateController;
 
 Route::middleware('auth:sanctum')->group(function (){
     // Routes for Task itself
-    Route::get('/index', IndexController::class)->name('task.index');
-    Route::get('/show/{task}', ShowController::class)->name('task.show');
-    Route::post('/store', StoreController::class)->name('task.store');
-    Route::put('/update/{task}', UpdateController::class)->name('task.update');
-    Route::delete('/delete/{task}', DestroyController::class)->name('task.destroy');
+    Route::get('/task/index', IndexController::class)->name('task.index');
+    Route::get('/task/show/{task}', ShowController::class)->name('task.show');
+    Route::post('/task/store', StoreController::class)->name('task.store');
+    Route::put('/task/update/{task}', UpdateController::class)->name('task.update');
+    Route::delete('/task/delete/{task}', DestroyController::class)->name('task.destroy');
     Route::post('/tasks/upload', ImportTaskController::class)->name('tasks.upload');
     Route::get('tasks/download', ExportTaskController::class)->name('tasks.download');
 
     // Routes for task status
-    Route::post('/status/start/{task}', StartTaskStatusController::class)->name('status.start');
-    Route::post('status/complete/{task}', CompleteTaskStatusController::class)->name('status.complete');
+    Route::post('/task/status/start/{task}', StartTaskStatusController::class)->name('status.start');
+    Route::post('task/status/complete/{task}', CompleteTaskStatusController::class)->name('status.complete');
 });

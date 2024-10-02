@@ -34,6 +34,8 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Modules\\": "Modules/",
+            "Modules\\Task\\": "Modules/Task/app",
+            "Modules\\User\\": "Modules/User/app",
             "Modules\\Task\\Database\\Migrations\\": "Modules/Task/Database/Migrations",
             "Modules\\User\\Database\\Migrations\\": "Modules/Task/Database/Migrations"
         }

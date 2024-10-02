@@ -6,7 +6,7 @@ use Illuminate\Container\EntryNotFoundException;
 use Modules\Task\app\Models\Task;
 use SM\SMException;
 
-class CompleteTask
+class StartTaskAction
 {
 
     /**
@@ -15,9 +15,9 @@ class CompleteTask
      */
     public function handle(Task $task): Task
     {
-        if($task->canApply(\Modules\Task\app\Models\ConstNames::COMPLETE))
+        if($task->canApply(\Modules\Task\app\Models\ConstNames::START))
         {
-            $task->apply(\Modules\Task\app\Models\ConstNames::COMPLETE);
+            $task->apply(\Modules\Task\app\Models\ConstNames::START);
             $task->save();
             return $task;
         }

@@ -3,20 +3,25 @@
 namespace Modules\User\app\Controller\Auth;
 
 use App\Http\Controllers\Controller;
-use Modules\User\app\Controller\Action\Auth\LoginUser;
+use Illuminate\Http\JsonResponse;
+use Modules\User\app\Controller\Action\Auth\LoginUserAction;
 use Modules\User\Requests\LoginRequest;
 
 class LoginController extends Controller
 {
-    protected $loginUser;
+    protected LoginUserAction $loginUser;
 
-    public function __construct(LoginUser $loginUser)
+    public function __construct(LoginUserAction $loginUser)
     {
         $this->loginUser = $loginUser;
     }
 
-    public function __invoke(LoginRequest $loginRequest)
+    /**
+     * @throws \Exception
+     */
+    public function __invoke(LoginRequest $loginRequest): JsonResponse
     {
-        return $this->loginUser->execute($loginRequest);
+        $user = $loginRequest->validated();
+        return $this->loginUser->execute($user);
     }
 }

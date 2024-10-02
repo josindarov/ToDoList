@@ -4,7 +4,7 @@ namespace Modules\Task\app\Controllers\Action\Task;
 
 use Modules\Task\app\Models\Task;
 
-class UpdateTask
+class UpdateTaskAction
 {
     public function handle(array $data, Task $task): void
     {

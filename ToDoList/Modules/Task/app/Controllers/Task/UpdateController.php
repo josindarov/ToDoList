@@ -5,15 +5,15 @@ namespace Modules\Task\app\Controllers\Task;
 use App\Http\Controllers\Controller;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
-use Modules\Task\app\Controllers\Action\Task\UpdateTask;
+use Modules\Task\app\Controllers\Action\Task\UpdateTaskAction;
 use Modules\Task\app\Models\Task;
 use Modules\Task\app\Requests\UpdateTaskRequest;
 
 class UpdateController extends Controller
 {
-    private UpdateTask $updateTask;
+    private UpdateTaskAction $updateTask;
 
-    function __construct(UpdateTask $updateTask)
+    function __construct(UpdateTaskAction $updateTask)
     {
         $this->updateTask = $updateTask;
     }

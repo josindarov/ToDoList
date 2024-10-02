@@ -2,7 +2,7 @@
 
 namespace Modules\User\app\Controller\Action\Auth;
 
-class LogoutUser
+class LogoutUserAction
 {
     public function execute($user): \Illuminate\Http\JsonResponse
     {
