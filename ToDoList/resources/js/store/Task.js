@@ -26,16 +26,16 @@ export default {
 
     actions: {
         async fetchTasks({ commit }) {
-            const response = await axiosInstance.get('/index');
+            const response = await axiosInstance.get('/task/index');
             commit('setTasks', response.data);
         },
         async createTask({ commit}, task) {
-            const response = await axiosInstance.post('/store', task);
+            const response = await axiosInstance.post('/task/store', task);
             commit('addTask', response.data);
         },
         async updateTask({ commit }, {id, task}) {
             try {
-                const response = await axiosInstance.put(`/update/${id}`, task);
+                const response = await axiosInstance.put(`/task/update/${id}`, task);
                 commit('updateTask', response.data);
             } catch (error) {
                 console.error("Error updating task:", error);
@@ -43,14 +43,14 @@ export default {
             }
         },
         async deleteTask({ commit }, taskId) {
-            await axiosInstance.delete(`/delete/${taskId}`);
+            await axiosInstance.delete(`/task/delete/${taskId}`);
             commit('deleteTask', taskId);
         },
         async startTask({commit}, taskId){
-            await axiosInstance.post(`/status/start/${taskId}`);
+            await axiosInstance.post(`/task/status/start/${taskId}`);
         },
         async completeTask({commit}, taskId){
-            await axiosInstance.post(`/status/complete/${taskId}`);
+            await axiosInstance.post(`/task/status/complete/${taskId}`);
         },
     },
     getters: {
